@@ -8,7 +8,7 @@ class Server:
         self._server = socket(AF_INET, SOCK_STREAM)
         self._server.bind((host, port))
         self._server.listen(5)
-        logging.basicConfig(filename='Alarm.log', encoding='utf-8', level=logging.INFO)
+#        logging.basicConfig(filename='Alarm.log', encoding='utf-8', level=logging.INFO)
 
     def listen(self):
         while True:
