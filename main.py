@@ -4,6 +4,7 @@ import RPi.GPIO as GPIO
 from enum import Enum
 from light_sensor import LightSensor
 from sensor import CalibrationException
+from sensors_manager import SensorsManager
 from server import Server
 
 LIGHT_SENSOR_PIN = 8
@@ -22,7 +23,7 @@ class SetupState(Enum):
 light_sensor = LightSensor(LIGHT_SENSOR_PIN)
 
 
-def calibration_light_sensor():
+def sensor_calibration():
     state = SetupState.CALIBRATION_NO_LIGHT
     GPIO.setwarnings(False)
     GPIO.setmode(GPIO.BOARD)
@@ -47,15 +48,13 @@ def calibration_light_sensor():
 
 def main():
     light_sensor.start()
+    sensors_manager = SensorsManager([light_sensor])
     while True:
         try:
-            calibration_light_sensor()
+            sensor_calibration()
             break
         except CalibrationException:     
             pass
-
-
-
-   # Server("localhost", 10021).listen()
+    Server("localhost", 10041, sensors_manager).listen()
 
 main()

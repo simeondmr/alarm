@@ -11,6 +11,7 @@ class Sensor(Thread):
         self.pin = pin
         self.type = type
         self.condition = Condition()
+        self.is_alarm_on = False
 
     """
     Thread for sensor monitoring.

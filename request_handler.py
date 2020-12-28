@@ -1,22 +1,20 @@
 from threading import Thread
 import time
-from datetime import datetime
-from light_sensor import LightSensor
 from socket import timeout
+
 
 class RequestHandler(Thread):
     ACK = 0X00
     NAK = 0x01
     REQ_PKT_HEADER = 0x0a
     DATA_PKT_HEADER = 0x0b
-    LIGHT_SENSOR_PIN = 10
     SAMPLING_TIME = 10
 
-    def __init__(self, client, logger):
+    def __init__(self, client, logger, sensors_manager):
         Thread.__init__(self)
         self._client = client
         self._logger = logger
-        self.sensor = LightSensor(self.LIGHT_SENSOR_PIN)
+        self.sensors_manager = sensors_manager
         self._client.settimeout(3)
 
     def read_presentation(self):
@@ -26,16 +24,13 @@ class RequestHandler(Thread):
             return self.ACK
 
     def send_pkt(self):
-        pkt = int(self.DATA_PKT_HEADER).to_bytes(1, byteorder="little")
-        pkt += int(time.mktime(datetime.now().timetuple())).to_bytes(4, byteorder="little")
-        pkt += self.sensor.read()
-        self._client.send(pkt)
+        self._client.send(self.sensors_manager.prepare_pkts())
 
     def run(self):
         resp = self.read_presentation()
         self._client.send(int(resp).to_bytes(1, byteorder="little"))
         if resp == self.NAK:
-            self._logger.info("Invalid request packet")
+            self._logger.info("Invalid request packet, connection closed")
             return
         self._logger.info("Presentation accepted")
         while True:
