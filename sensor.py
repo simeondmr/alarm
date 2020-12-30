@@ -1,17 +1,13 @@
 from enum import Enum
 from threading import Thread, Condition
 
-"""
-General sensor class, every physical sensors must
-extends this class
-"""
+"""General sensor class, every physical sensors must extends this class"""
 class Sensor(Thread):
     def __init__(self, pin, type):
         Thread.__init__(self)
         self.pin = pin
         self.type = type
         self.condition = Condition()
-        self.is_alarm_on = False
 
     """
     Thread for sensor monitoring.
@@ -37,10 +33,10 @@ class Sensor(Thread):
     def read(self):
         pass
 
-
+"""Enum containing all sensors in use"""
 class SensorType(Enum):
     PHOTORESISTOR = 1
 
-
+"""Use this exception if a sensor calibration fail"""
 class CalibrationException(Exception):
     pass

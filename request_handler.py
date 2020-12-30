@@ -2,16 +2,19 @@ from threading import Thread
 import time
 from socket import timeout
 
+from alarm_observer import AlarmObserver
 
-class RequestHandler(Thread):
+
+class RequestHandler(Thread, AlarmObserver):
     ACK = 0X00
     NAK = 0x01
     REQ_PKT_HEADER = 0x0a
     DATA_PKT_HEADER = 0x0b
     SAMPLING_TIME = 10
 
-    def __init__(self, client, logger, sensors_manager):
+    def __init__(self, client, logger, sensors_manager, alarm_subject):
         Thread.__init__(self)
+        AlarmObserver.__init__(self, alarm_subject)
         self._client = client
         self._logger = logger
         self.sensors_manager = sensors_manager
@@ -24,7 +27,13 @@ class RequestHandler(Thread):
             return self.ACK
 
     def send_pkt(self):
-        self._client.send(self.sensors_manager.prepare_pkts())
+        try:
+            self._client.send(self.sensors_manager.prepare_pkts(self.alarm_subject.alarm_status))
+        except IOError:
+            self.alarm_subject.detach(self)
+
+    def update(self):
+        self.send_pkt()
 
     def run(self):
         resp = self.read_presentation()
