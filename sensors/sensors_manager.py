@@ -1,7 +1,7 @@
 import time
 from datetime import datetime
 
-from request_handler import RequestHandler
+from server.request_handler import RequestHandler
 
 
 class SensorsManager:

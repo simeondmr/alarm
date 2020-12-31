@@ -36,6 +36,7 @@ class Sensor(Thread):
 """Enum containing all sensors in use"""
 class SensorType(Enum):
     PHOTORESISTOR = 1
+    THERMISTOR = 2
 
 """Use this exception if a sensor calibration fail"""
 class CalibrationException(Exception):

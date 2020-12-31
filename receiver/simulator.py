@@ -16,7 +16,7 @@ while True:
     print("Time: " + str(data[1:4]))
     print("Sensor type: " + str(data[5]))
     print("Alarm: " + str(data[6]))
-    print("Sensor value" + str(data[7:10]))
+    print("Sensor value " + str(data[7:10]))
     print("\n\n")
     server.send(bytes([ACK]))
 

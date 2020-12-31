@@ -3,11 +3,11 @@ from time import sleep
 import RPi.GPIO as GPIO
 from enum import Enum
 
-from alarm_subject import AlarmSubject
-from light_sensor import LightSensor
-from sensor import CalibrationException
-from sensors_manager import SensorsManager
-from server import Server
+from notification.alarm_subject import AlarmSubject
+from sensors.light_sensor import LightSensor
+from sensors.sensor import CalibrationException
+from sensors.sensors_manager import SensorsManager
+from server.server import Server
 
 LIGHT_SENSOR_PIN = 8
 BUTTON_PIN = 10

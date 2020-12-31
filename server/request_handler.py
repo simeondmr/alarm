@@ -2,7 +2,7 @@ from threading import Thread
 import time
 from socket import timeout
 
-from alarm_observer import AlarmObserver
+from notification.alarm_observer import AlarmObserver
 
 
 class RequestHandler(Thread, AlarmObserver):
