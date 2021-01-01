@@ -18,13 +18,13 @@ class Sensor(Thread):
         self.condition.wait()
         self.condition.release()
         while True:
-            self._trigger()
+            self.trigger()
 
     """
     This method must be implement to execute some work,
     if the sensor reach some certain value.
     """
-    def _trigger(self):
+    def trigger(self):
         pass
 
     """

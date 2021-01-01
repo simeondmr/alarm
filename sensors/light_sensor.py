@@ -20,7 +20,7 @@ class LightSensor(Photoresistor):
         self.buzzer_alarm = BuzzerAlarm(self.BUZZER_ALARM_PIN)
         self.subject = subject
 
-    def _trigger(self):
+    def trigger(self):
         current = self.read()
         print("current: " + str(current) + " low: " + str(self.low) + " high: " + str(self.high))
         if self.low > current >= self.high and self.low > current >= self.high:

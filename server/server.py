@@ -1,5 +1,5 @@
 from socket import *
-from request_handler import RequestHandler
+from server.request_handler import RequestHandler
 import logging
 
 

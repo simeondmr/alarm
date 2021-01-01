@@ -1,4 +1,4 @@
-from sensor import Sensor, SensorType, CalibrationException
+from sensors.sensor import Sensor, SensorType, CalibrationException
 
 
 class Photoresistor(Sensor):
