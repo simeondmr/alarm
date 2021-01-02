@@ -3,6 +3,7 @@ from time import sleep
 import RPi.GPIO as GPIO
 from enum import Enum
 
+from ads1115.ads1115_init import ADS1115Init
 from notification.alarm_subject import AlarmSubject
 from sensors.light_sensor import LightSensor
 from sensors.sensor import CalibrationException
@@ -21,9 +22,9 @@ class SetupState(Enum):
     BUTTON_RELEASE = 1
     CALIBRATION_MAX_LIGHT = 2
 
-
+ads1115 = ADS1115Init(1)
 alarm_subject = AlarmSubject()
-light_sensor = LightSensor(LIGHT_SENSOR_PIN, alarm_subject)
+light_sensor = LightSensor(LIGHT_SENSOR_PIN, ads1115, alarm_subject, True)
 
 
 def sensor_calibration():

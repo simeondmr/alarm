@@ -1,10 +1,11 @@
+from sensors.AnalogSensor import AnalogSensor
 from sensors.sensor import Sensor, SensorType, CalibrationException
 
 
-class Photoresistor(Sensor):
+class Photoresistor(AnalogSensor):
 
-    def __init__(self, pin):
-        super().__init__(pin, SensorType.PHOTORESISTOR)
+    def __init__(self, pin, ads, calibration):
+        super().__init__(pin, ads, SensorType.PHOTORESISTOR, calibration)
         self.high = 0
         self.low = 0
 

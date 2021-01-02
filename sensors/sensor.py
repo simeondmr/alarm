@@ -3,20 +3,22 @@ from threading import Thread, Condition
 
 """General sensor class, every physical sensors must extends this class"""
 class Sensor(Thread):
-    def __init__(self, pin, type):
+    def __init__(self, pin, type, calibration):
         Thread.__init__(self)
         self.pin = pin
         self.type = type
         self.condition = Condition()
+        self.calibration = calibration
 
     """
     Thread for sensor monitoring.
-    This thread must be wake up only after calibration
+    This thread must be wake up only after calibration,  if necessary
     """
     def run(self):
-        self.condition.acquire()
-        self.condition.wait()
-        self.condition.release()
+        if self.calibration:
+            self.condition.acquire()
+            self.condition.wait()
+            self.condition.release()
         while True:
             self.trigger()
 
