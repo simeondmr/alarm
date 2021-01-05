@@ -1,3 +1,5 @@
+from threading import Lock
+
 import RPi.GPIO as GPIO
 from buzzer.buzzer_alarm import BuzzerAlarm
 from sensors.photoresistor import Photoresistor
@@ -6,19 +8,20 @@ from time import sleep
 
 class LightSensor(Photoresistor):
     SAMPLING_DELAY = 1
-    BUZZER_ALARM_PIN = 35
+    BUZZER_ALARM_PIN = 19
 
     def __init__(self, pin, ads, subject, calibration):
         super().__init__(pin, ads, calibration)
-        GPIO.setwarnings(False)
-        GPIO.setmode(GPIO.BOARD)
         self.buzzer_alarm = BuzzerAlarm(self.BUZZER_ALARM_PIN)
         self.subject = subject
+        self.mutex = Lock()
+        GPIO.setwarnings(False)
+        GPIO.setmode(GPIO.BCM)
 
     def trigger(self):
         current = self.read()
         print("current: " + str(current) + " low: " + str(self.low) + " high: " + str(self.high))
-        if self.low > current >= self.high and self.low > current >= self.high:
+        if self.low >= current >= self.high:
             self.subject.set_alarm_status(False)
         else:
             self.subject.set_alarm_status(True)
@@ -27,4 +30,4 @@ class LightSensor(Photoresistor):
         sleep(self.SAMPLING_DELAY)
 
     def read(self):
-        return self.chan.voltage()
+        return self.chan.value

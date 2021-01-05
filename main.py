@@ -8,12 +8,14 @@ from notification.alarm_subject import AlarmSubject
 from sensors.light_sensor import LightSensor
 from sensors.sensor import CalibrationException
 from sensors.sensors_manager import SensorsManager
+from sensors.tdc310_thermistor import TDC310Thermistor
 from server.server import Server
+import adafruit_ads1x15.ads1115 as adafruit_ads1115
 
-LIGHT_SENSOR_PIN = 8
-BUTTON_PIN = 10
-LED_CALIBRATION_NO_LIGHT_PIN = 40
-LED_CALIBRATION_MAX_LIGHT_PIN = 38
+LIGHT_SENSOR_PIN = 14
+BUTTON_PIN = 15
+LED_CALIBRATION_NO_LIGHT_PIN = 21
+LED_CALIBRATION_MAX_LIGHT_PIN = 20
 DELAY_BUTTON_BOUNCE = 0.020
 
 
@@ -24,13 +26,13 @@ class SetupState(Enum):
 
 ads1115 = ADS1115Init(1)
 alarm_subject = AlarmSubject()
-light_sensor = LightSensor(LIGHT_SENSOR_PIN, ads1115, alarm_subject, True)
-
+light_sensor = LightSensor(adafruit_ads1115.P1, ads1115.ads, alarm_subject, True)
+tdc310 = TDC310Thermistor(adafruit_ads1115.P0, ads1115.ads, alarm_subject, True)
 
 def sensor_calibration():
     state = SetupState.CALIBRATION_NO_LIGHT
     GPIO.setwarnings(False)
-    GPIO.setmode(GPIO.BOARD)
+    GPIO.setmode(GPIO.BCM)
     GPIO.setup(BUTTON_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
     GPIO.setup(LED_CALIBRATION_NO_LIGHT_PIN, GPIO.OUT, initial=GPIO.LOW)
     GPIO.setup(LED_CALIBRATION_MAX_LIGHT_PIN, GPIO.OUT, initial=GPIO.LOW)
@@ -52,13 +54,15 @@ def sensor_calibration():
 
 def main():
     light_sensor.start()
-    sensors_manager = SensorsManager([light_sensor])
+    tdc310.start()
+    sensors_manager = SensorsManager([light_sensor, tdc310])
     while True:
         try:
             sensor_calibration()
             break
         except CalibrationException:     
             pass
-    Server("localhost", 10063, sensors_manager, alarm_subject).listen()
+    Server("localhost", 10067, sensors_manager, alarm_subject).listen()
+
 
 main()

@@ -9,7 +9,7 @@ class BuzzerAlarm:
 
     def __init__(self, pin):
         GPIO.setwarnings(False)
-        GPIO.setmode(GPIO.BOARD)
+        GPIO.setmode(GPIO.BCM)
         GPIO.setup(pin, GPIO.OUT, initial=GPIO.LOW)
         self.pin = pin
 
