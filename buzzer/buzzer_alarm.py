@@ -1,5 +1,4 @@
 from time import sleep
-
 from RPi import GPIO
 
 
@@ -8,8 +7,6 @@ class BuzzerAlarm:
     N_SOUND = 1000
 
     def __init__(self, pin):
-        GPIO.setwarnings(False)
-        GPIO.setmode(GPIO.BCM)
         GPIO.setup(pin, GPIO.OUT, initial=GPIO.LOW)
         self.pin = pin
 

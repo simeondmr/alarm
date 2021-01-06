@@ -20,6 +20,7 @@ class TDC310Thermistor(Thermistor):
 
     def __init__(self, pin, ads, subject, calibration):
         super().__init__(pin, ads, calibration)
+        self.subject = subject
 
     def trigger(self):
         pass
