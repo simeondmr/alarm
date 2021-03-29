@@ -14,7 +14,6 @@ class LightSensor(Photoresistor):
 
     def trigger(self):
         current = self.read()
-        print("current: " + str(current) + " low: " + str(self.low) + " high: " + str(self.high))
         if self.low >= current >= self.high:
             self.subject.set_alarm_status(False)
         else:

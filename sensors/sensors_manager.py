@@ -14,5 +14,5 @@ class SensorsManager:
             pkt += int(time.mktime(datetime.now().timetuple())).to_bytes(4, byteorder="little")
             pkt += int(sensor.type.value).to_bytes(1, byteorder="little")
             pkt += int(alarm_status is True).to_bytes(1, byteorder="little")
-            pkt += int(sensor.read()).to_bytes(4, byteorder="little")
+            pkt += int(sensor.read()).to_bytes(2, byteorder="little")
         return pkt

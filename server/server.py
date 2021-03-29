@@ -16,6 +16,7 @@ class Server:
         while True:
             logging.info("Wait for a new connection...")
             (client, address) = self._server.accept()
+            print("connected")
             request_handler = RequestHandler(client, logging, self.sensors_manager, self.alarm_subject)
             self.alarm_subject.attach(request_handler)
             request_handler.start()

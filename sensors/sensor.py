@@ -39,6 +39,7 @@ class Sensor(Thread):
 class SensorType(Enum):
     PHOTORESISTOR = 1
     THERMISTOR = 2
+    PASSIVE_INFRARED = 3
 
 """Use this exception if a sensor calibration fail"""
 class CalibrationException(Exception):

@@ -3,7 +3,9 @@ from enum import Enum
 from RPi import GPIO
 from ads1115.ads1115_init import ADS1115Init
 from notification.alarm_subject import AlarmSubject
+from sensors.hc_sr501 import HCSR501
 from sensors.light_sensor import LightSensor
+from sensors.sensor import SensorType
 from sensors.sensors_manager import SensorsManager
 from sensors.tdc310_thermistor import TDC310Thermistor
 from time import sleep
@@ -26,13 +28,16 @@ class Setup:
     def __init__(self):
         GPIO.setwarnings(False)
         GPIO.setmode(GPIO.BCM)
-        self.ads1115 = ADS1115Init(1)
+        #self.ads1115 = ADS1115Init(1)
         self.alarm_subject = AlarmSubject()
-        self.light_sensor = LightSensor(adafruit_ads1115.P1, self.ads1115.ads, self.alarm_subject, True)
-        self.tdc310 = TDC310Thermistor(adafruit_ads1115.P0, self.ads1115.ads, self.alarm_subject, True)
-        self.sensors_manager = SensorsManager([self.light_sensor, self.tdc310])
-        self.light_sensor.start()
-        self.tdc310.start()
+        #self.light_sensor = LightSensor(adafruit_ads1115.P1, self.ads1115.ads, self.alarm_subject, True)
+        #self.tdc310 = TDC310Thermistor(adafruit_ads1115.P0, self.ads1115.ads, self.alarm_subject, True)
+
+        self.hcsr501 = HCSR501(14, SensorType.PASSIVE_INFRARED, self.alarm_subject, False)
+        self.sensors_manager = SensorsManager([self.hcsr501])
+        self.hcsr501.start()
+        #self.light_sensor.start()
+        #self.tdc310.start()
 
     def light_sensor_calibration(self):
         state = SetupState.CALIBRATION_NO_LIGHT
