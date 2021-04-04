@@ -1,21 +1,21 @@
-from time import sleep
-
 from RPi import GPIO
 
 from sensors.digital_sensor import DigitalSensor
 
 
 class HCSR501(DigitalSensor):
-    def __init__(self, pin, type, subject, calibration):
-        super().__init__(pin, type, calibration)
-        GPIO.setup(self.pin, GPIO.IN)
+    def __init__(self, pin, type, subject, calibration, enabled):
+        super().__init__(pin, type, calibration, enabled)
         self.subject = subject
+        GPIO.setup(self.pin, GPIO.IN)
+        GPIO.add_event_detect(pin, GPIO.BOTH, callback=self.event_callback)
 
-    def trigger(self):
-        if GPIO.input(self.pin):
+    def event_callback(self, channel):
+        if GPIO.input(channel):
             self.subject.set_alarm_status(True)
-            self.subject.notify_all()
-            sleep(1)
+        else:
+            self.subject.set_alarm_status(False)
+        self.subject.notify_all()
 
     def read(self):
         if GPIO.input(self.pin):

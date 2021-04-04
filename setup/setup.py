@@ -33,9 +33,9 @@ class Setup:
         #self.light_sensor = LightSensor(adafruit_ads1115.P1, self.ads1115.ads, self.alarm_subject, True)
         #self.tdc310 = TDC310Thermistor(adafruit_ads1115.P0, self.ads1115.ads, self.alarm_subject, True)
 
-        self.hcsr501 = HCSR501(14, SensorType.PASSIVE_INFRARED, self.alarm_subject, False)
+        self.hcsr501 = HCSR501(14, SensorType.PASSIVE_INFRARED, self.alarm_subject, False, True)
         self.sensors_manager = SensorsManager([self.hcsr501])
-        self.hcsr501.start()
+       # self.hcsr501.start()
         #self.light_sensor.start()
         #self.tdc310.start()
 

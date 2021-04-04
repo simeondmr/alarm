@@ -7,8 +7,8 @@ class LightSensor(Photoresistor):
     SAMPLING_DELAY = 1
     BUZZER_ALARM_PIN = 19
 
-    def __init__(self, pin, ads, subject, calibration):
-        super().__init__(pin, ads, calibration)
+    def __init__(self, pin, ads, subject, calibration, enabled):
+        super().__init__(pin, ads, calibration, enabled)
         self.buzzer_alarm = BuzzerAlarm(self.BUZZER_ALARM_PIN)
         self.subject = subject
 

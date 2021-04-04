@@ -18,8 +18,8 @@ class TDC310Thermistor(Thermistor):
     SAMPLING_DELAY = 0.01
     READ_DELAY = 0.01
 
-    def __init__(self, pin, ads, subject, calibration):
-        super().__init__(pin, ads, calibration)
+    def __init__(self, pin, ads, subject, calibration, enabled):
+        super().__init__(pin, ads, calibration, enabled)
         self.subject = subject
 
     def trigger(self):

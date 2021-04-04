@@ -9,7 +9,8 @@ class SensorsManager:
 
     def prepare_pkts(self, alarm_status):
         pkt = b''
-        for sensor in self.sensors:
+        enabled_sensors = (sensor for sensor in self.sensors if sensor.enabled is True)
+        for sensor in enabled_sensors:
             pkt += int(RequestHandler.DATA_PKT_HEADER).to_bytes(1, byteorder="little")
             pkt += int(time.mktime(datetime.now().timetuple())).to_bytes(4, byteorder="little")
             pkt += int(sensor.type.value).to_bytes(1, byteorder="little")

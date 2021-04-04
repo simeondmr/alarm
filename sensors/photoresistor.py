@@ -4,8 +4,8 @@ from sensors.sensor import Sensor, SensorType, CalibrationException
 
 class Photoresistor(AnalogSensor):
 
-    def __init__(self, pin, ads, calibration):
-        super().__init__(pin, ads, SensorType.PHOTORESISTOR, calibration)
+    def __init__(self, pin, ads, calibration, enabled):
+        super().__init__(pin, ads, SensorType.PHOTORESISTOR, calibration, enabled)
         self.high = 0
         self.low = 0
 
